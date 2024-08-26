@@ -30,11 +30,10 @@ OPENOBSERVE_PASSWORD=root_password
 ### Fluent-bit Configuration
 
 ```fluent-bit.conf
-
 [INPUT]
     Name         tail
     Path         /var/log/*.log
-    Tag          fluentbit_logs_collector # This will be the log stream name
+    #Tag          fluentbit_logs_collector # This will be the log stream name
     Path_Key     filename
     Skip_Empty_Lines  On
     Read_from_Head    true
@@ -59,7 +58,6 @@ OPENOBSERVE_PASSWORD=root_password
     Json_date_format iso8601
     HTTP_User ${OPENOBSERVE_USERNAME}
     HTTP_Passwd ${OPENOBSERVE_PASSWORD}
-
 ```
 
 ### Otel Configuration
