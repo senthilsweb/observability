@@ -14,7 +14,7 @@ OpenTelemetry logging and visualization using OpenObserve as the backend, with O
 - Includes basic username and password authentication for the OpenObserve API. 
 
 
-**How to customize for your needs?**
+**How to customize to your requirements?**
 
 
 1. Tweak the environment variables to your requirements.
@@ -97,4 +97,19 @@ extensions:
     client_auth: 
       username: ${OPENOBSERVE_USERNAME}
       password: ${OPENOBSERVE_PASSWORD}
+```
+
+## How to run?
+
+```
+docker-compose up -d
+```
+
+```
+docker-compose down
+```
+
+Remove volume
+```
+docker-compose down -v
 ```
