@@ -19,6 +19,8 @@ OpenTelemetry logging and visualization using OpenObserve as the backend, with O
 
 1. Tweak the environment variables to your requirements.
 
+### .env file
+
 ```.env
 OPENOBSERVE_HOST=openobserve
 OPENOBSERVE_PORT=5080
