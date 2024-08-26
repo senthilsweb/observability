@@ -1,0 +1,60 @@
+services:
+  otel:
+    image: otel/opentelemetry-collector-contrib:0.106.1
+    restart: unless-stopped
+    command: [ "--config=/etc/config.yml" ]
+    volumes:
+      - ./config/otel/config.yml:/etc/config.yml
+      - /Users/skaruppaiah1/containers/ycrash-logs/07:/etc/logs
+    depends_on:
+      - openobserve
+    environment:
+      OPENOBSERVE_HOST: ${OPENOBSERVE_HOST}
+      OPENOBSERVE_PORT: ${OPENOBSERVE_PORT}
+      OPENOBSERVE_USERNAME: ${OPENOBSERVE_USERNAME}
+      OPENOBSERVE_PASSWORD: ${OPENOBSERVE_PASSWORD}
+    networks:
+      - nw_openobserve
+
+  openobserve:
+    image: openobserve/openobserve:v0.10.8
+    container_name: openobserve
+    restart: always
+    ports:
+      - 5080:5080
+    volumes:
+      - vol_openobserve:/data
+    environment:
+      ZO_ROOT_USER_PASSWORD: ${OPENOBSERVE_PASSWORD}
+      ZO_ROOT_USER_EMAIL: ${OPENOBSERVE_USERNAME}
+      ZO_DATA_DIR: "/data"
+      ZO_COMPACT_DATA_RETENTION_DAYS: "5"
+      ZO_TELEMETRY: "false"
+    networks:
+      - nw_openobserve
+  
+  log_fluentbit:
+    container_name: log_fluentbit
+    image: fluent/fluent-bit:2.2.3
+    volumes:
+      - ./config/fluentbit:/fluent-bit/etc/
+      - /Users/skaruppaiah1/projects/dagster-data-pipeline/logs:/var/log
+    restart: always
+    environment:
+      OPENOBSERVE_HOST: ${OPENOBSERVE_HOST:-openobserve}
+      OPENOBSERVE_PORT: ${OPENOBSERVE_PORT:-5080}
+      OPENOBSERVE_USERNAME: ${OPENOBSERVE_USERNAME}
+      OPENOBSERVE_PASSWORD: ${OPENOBSERVE_PASSWORD}
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    depends_on:
+      - openobserve
+    networks:
+      - nw_openobserve
+
+volumes:
+  vol_openobserve: {}
+
+networks:
+  nw_openobserve:

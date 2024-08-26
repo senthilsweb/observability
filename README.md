@@ -101,6 +101,7 @@ extensions:
 
 ## How to run?
 
+
 ```
 docker-compose up -d
 ```
@@ -113,3 +114,5 @@ Remove volume
 ```
 docker-compose down -v
 ```
+
+Access the openobserve UI @ `http://localhost:5080` with login and password as `root_user@example.com` |  `root_password` 
