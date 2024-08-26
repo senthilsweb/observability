@@ -16,10 +16,11 @@ OpenTelemetry logging and visualization using OpenObserve as the backend, with O
 
 **How to customize to your requirements?**
 
+1. Clone the repository and cd into `openobserve`
 
-1. Tweak the environment variables to your requirements.
+2. Create `.env` file in the root and adjust the variables to your requirements.
 
-### .env file
+ **.env file**
 
 ```.env
 OPENOBSERVE_HOST=openobserve
@@ -27,9 +28,10 @@ OPENOBSERVE_PORT=5080
 OPENOBSERVE_USERNAME=root_user@example.com
 OPENOBSERVE_PASSWORD=root_password
 ```
-2. Adjust the log files location in both the `config.yml` and `fluent-bit.conf` located inside `config` folder. You can use both or disable/remove any one of the collectors.
 
-### Fluent-bit Configuration
+3. Edit `config.yml` and `fluent-bit.conf` located inside your root `config` folder with the path of the log files. You can use bothor disable/remove any one of the collectors.
+
+**Fluent-bit Configuration**
 
 ```fluent-bit.conf
 [INPUT]
@@ -62,7 +64,7 @@ OPENOBSERVE_PASSWORD=root_password
     HTTP_Passwd ${OPENOBSERVE_PASSWORD}
 ```
 
-### Otel Configuration
+**Otel Configuration**
 
 ```config.yml
 receivers:
@@ -99,20 +101,22 @@ extensions:
       password: ${OPENOBSERVE_PASSWORD}
 ```
 
-## How to run?
-
+**Run by docker-compose up**
 
 ```
 docker-compose up -d
 ```
+Access the openobserve UI @ `http://localhost:5080` with login and password as `root_user@example.com` |  `root_password` 
+
+**Shut down the application**
 
 ```
 docker-compose down
 ```
 
-Remove volume
+**Shut down the application and remove volume**
+
 ```
 docker-compose down -v
 ```
 
-Access the openobserve UI @ `http://localhost:5080` with login and password as `root_user@example.com` |  `root_password` 
