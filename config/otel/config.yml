@@ -21,6 +21,10 @@ receivers:
           layout: '%Y-%m-%d %H:%M:%S'
         message:
           parse_from: attributes.body
+      - type: regex_parser
+        regex: '\*/(?P<sql>[\s\S]*)'
+        sql:
+          parse_from: attributes.body
   hostmetrics:
     collection_interval: 30s
     root_path: /hostfs

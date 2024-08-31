@@ -2,6 +2,7 @@
 
 
 ============================== 22:19:43.291163 | d52c1adc-5cac-4a49-8209-8c5336409cea ==============================
+SELECT * FROM "otel_logs_collector" where body like '%create view%'
 [0m22:19:43.291163 [info ] [MainThread]: Running with dbt=1.7.10
 [0m22:19:43.291550 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': '/Users/skaruppaiah1/projects/dbt-duckdb-tickit-pipeline/logs', 'fail_fast': 'False', 'profiles_dir': '/Users/skaruppaiah1/projects/dbt-duckdb-tickit-pipeline', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt deps', 'send_anonymous_usage_stats': 'True'}
 [0m22:19:43.348092 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'project_id', 'label': 'd52c1adc-5cac-4a49-8209-8c5336409cea', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109096d60>]}
