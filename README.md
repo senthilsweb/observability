@@ -20,7 +20,7 @@ OpenTelemetry logging and visualization using OpenObserve as the backend, with O
 
 2. Create `.env` file in the root and adjust the variables to your requirements.
 
- **.env file**
+**.env file**
 
 ```.env
 OPENOBSERVE_HOST=openobserve

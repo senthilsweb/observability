@@ -1,9 +1,46 @@
 receivers:
   filelog:
-    include: ['/etc/logs/*.txt']
+    include: 
+      - /etc/logs/*.log
+      #- /etc/logs/*.txt
+    multiline:
+     line_start_pattern: '^\x1b\['
     start_at: beginning
     include_file_name: true  # Ensure the file name is included in the logs
     include_file_path: true  # Ensure the file path is included in the logs
+    #preserve_trailing_whitespaces: true
+    #preserve_leading_whitespaces: false
+    operators:
+      - field: attributes.log_type
+        type: add
+        value: file
+      - type: regex_parser
+        regex: '(?P<timestamp>\d{2}:\d{2}:\d{2}\.\d{6})\s+\[(?P<log_level>\w+)\s*\]\s+\[(?P<thread>\w+)\]:\s+(?P<message>.*)'
+        timestamp:
+          parse_from: attributes.timestamp
+          layout: '%Y-%m-%d %H:%M:%S'
+        message:
+          parse_from: attributes.body
+  hostmetrics:
+    collection_interval: 30s
+    root_path: /hostfs
+    scrapers:
+      cpu: {}
+      load: {}
+      memory: {}
+      disk: {}
+      filesystem: {}
+      network: {}
+
+processors:
+    attributes/app_metadata:
+      actions:
+        - key: client_id
+          value: 1123
+          action: insert
+        - key: app_name
+          value: dbt
+          action: insert
                
 exporters:
   logging:
@@ -16,14 +53,22 @@ exporters:
       stream-name: otel_logs_collector # This will be the log stream name
     auth:
       authenticator: basicauth/client
+  prometheusremotewrite:
+    endpoint: http://${OPENOBSERVE_HOST}:${OPENOBSERVE_PORT}/api/default/prometheus/api/v1/write
+    auth:
+      authenticator: basicauth/client
 
 service:
   extensions: [basicauth/client]
   pipelines:
     logs:
       receivers: [filelog]
-      processors: []
+      processors: [attributes/app_metadata]
       exporters: [logging,otlphttp/openobserve]
+    metrics:
+      receivers: [hostmetrics]
+      processors: []
+      exporters: [prometheusremotewrite]
 
 extensions:
   basicauth/client:

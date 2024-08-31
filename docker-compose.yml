@@ -5,7 +5,8 @@ services:
     command: [ "--config=/etc/config.yml" ]
     volumes:
       - ./config/otel/config.yml:/etc/config.yml
-      - /Users/skaruppaiah1/containers/ycrash-logs/07:/etc/logs
+      - ./demo-app/dbt/logs:/etc/logs
+      - /:/hostfs:ro
     depends_on:
       - openobserve
     environment:
@@ -39,6 +40,7 @@ services:
     volumes:
       - ./config/fluentbit:/fluent-bit/etc/
       - /Users/skaruppaiah1/projects/dagster-data-pipeline/logs:/var/log
+      - ./demo-app/dbt/logs:/var/log
     restart: always
     environment:
       OPENOBSERVE_HOST: ${OPENOBSERVE_HOST:-openobserve}
