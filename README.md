@@ -1,8 +1,4 @@
-# Observability
-
-The term "observability" was first introduced by Hungarian-American engineer Rudolf E. Kálmán in 1960 within the realm of control theory, describing a system's ability to infer its internal state based on available data. In recent years, the concept has been adapted and popularized in the software industry, particularly in the context of `complex, distributed systems`.
-
-## Observability as Side-car
+# Observability as Side-car
 
 I have provided a ready-to-use, zero-coding solution to implement observability for existing applications, independent of technology or platform. This Dockerized sidecar solution leverages OpenObserve and OpenTelemetry to seamlessly integrate telemetry and observability into your applications without any code changes.
 
