@@ -39,7 +39,6 @@ services:
     image: fluent/fluent-bit:2.2.3
     volumes:
       - ./config/fluentbit:/fluent-bit/etc/
-      - /Users/skaruppaiah1/projects/dagster-data-pipeline/logs:/var/log
       - ./demo-app/dbt/logs:/var/log
     restart: always
     environment:
