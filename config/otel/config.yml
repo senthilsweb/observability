@@ -2,14 +2,11 @@ receivers:
   filelog:
     include: 
       - /etc/logs/*.log
-      #- /etc/logs/*.txt
     multiline:
      line_start_pattern: '^\x1b\['
     start_at: beginning
     include_file_name: true  # Ensure the file name is included in the logs
     include_file_path: true  # Ensure the file path is included in the logs
-    #preserve_trailing_whitespaces: true
-    #preserve_leading_whitespaces: false
     operators:
       - field: attributes.log_type
         type: add
