@@ -2,7 +2,7 @@
 
 I have provided a ready-to-use, zero-coding solution to implement observability for existing applications, independent of technology or platform. This Dockerized sidecar solution leverages OpenObserve and OpenTelemetry to seamlessly integrate telemetry and observability into your applications without any code changes.
 
-![App with Observability](app-with-observability.drawio.svg "App with Observability")
+![App with Observability](app-with-observability%20(1).jpg "App with Observability")
 
 
 **Implementation Highlights:**
