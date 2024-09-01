@@ -17,10 +17,9 @@ I have provided a ready-to-use, zero-coding solution to implement observability 
 - [x] Basic username and password authentication for the OpenObserve API.
 - [x] Examples for both logs and metrics to guide implementation.
 
-## Obsewrvability Implementaiton Architecture
+## Observability Implementaiton Architecture
 
-![Observability as side car](observability-side-car.drawio.svg "Observability as side car")
-
+![Observability as side car](observability-side-car-docker.jpg "Observability as side car")
 
 
 ## Getting Started
