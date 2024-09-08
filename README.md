@@ -19,7 +19,7 @@ I have provided a ready-to-use, zero-coding solution to implement observability 
 
 ## Obsewrvability Implementaiton Architecture
 
-![Observability as side car](observability-side-car.drawio.svg "Observability as side car")
+![Observability as side car](observability-side-car-docker.jpg "Observability as side car")
 
 ## Comparing Observability with Human Physiology
 
