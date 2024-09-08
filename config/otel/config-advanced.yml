@@ -1,0 +1,116 @@
+receivers:
+  filelog:
+    include: 
+      - /etc/logs/dbt-data-pipeline/*.log
+    multiline:
+     line_start_pattern: '^\x1b\[' # Example for dbt log pattern
+    start_at: beginning
+    include_file_name: true 
+    include_file_path: true 
+    operators:
+      - field: attributes.log_type
+        type: add
+        value: file
+      - type: router
+        id: route_by_filename
+        routes:
+          - output: extract_metadata_from_filepath
+            expr: 'body matches "^\\x1b\\["' # Match only dbt logs
+            #expr: 'strings.contains(attributes["log.file.name"], "dbt")'
+          - output: default_route 
+            expr: 'true' # catchall routes
+      - type: regex_parser
+        id: extract_metadata_from_filepath
+        regex: '(?P<timestamp>\d{2}:\d{2}:\d{2}\.\d{6})\s+\[(?P<log_level>\w+)\s*\]\s+\[(?P<thread>\w+)\]:\s+(?P<message>.*)' # Example for dbt log pattern
+        timestamp:
+          parse_from: attributes.timestamp
+          layout: '%Y-%m-%d %H:%M:%S'
+        message:
+          parse_from: attributes.body
+        output: attach_service
+      - field: attributes.service
+        id: attach_service
+        type: add
+        value: "DBT Data Pipeline"  
+      - type: regex_parser # Example for dbt log pattern to extract sql statement
+        regex: '\*/(?P<sql>[\s\S]*)'
+        sql:
+          parse_from: attributes.body
+      - type: noop # For Catchall route to retain the body as-is
+        id: default_route
+
+  filelog/tomcat:
+    include: 
+      - /etc/logs/**/catalina.out
+    multiline:
+     line_start_pattern: '^\d{2}-[A-Za-z]{3}-\d{4}\s\d{2}:\d{2}:\d{2}\.\d{3}' # Example for tomcat log pattern
+    start_at: beginning
+    include_file_name: true  
+    include_file_path: true  
+    operators:
+      - field: attributes.log_type
+        type: add
+        value: file
+      - field: attributes.service
+        type: add
+        value: "Tomcat Web App"
+      - type: regex_parser
+        regex: '(?P<date>\d{2}-[A-Za-z]{3}-\d{4})\s(?P<time>\d{2}:\d{2}:\d{2}\.\d{3})\s(?P<log_level>[A-Z]+)\s\[(?P<thread>[^\]]+)\]\s(?P<class>[^\s]+)\s(?P<message>.*)'
+        timestamp:
+          parse_from: attributes.date, attributes.time
+          layout: '%d-%b-%Y %H:%M:%S.%f'
+        message:
+          parse_from: attributes.body
+
+  filelog/apache-common:
+    include: 
+      - /etc/logs/apache-common/apache-common.log
+    start_at: beginning
+    include_file_name: true  
+    include_file_path: true  
+    operators:
+      - field: attributes.log_type
+        type: add
+        value: file
+      - field: attributes.service
+        type: add
+        value: "Apache Common log"
+processors:
+    attributes/app_metadata:
+      actions:
+        - key: app_version
+          value: 7.2.0.1
+          action: insert
+        - key: app_name
+          value: TemplrJS
+          action: insert
+               
+exporters:
+  logging:
+    verbosity: detailed
+
+  otlphttp/openobserve:
+    endpoint: http://${OPENOBSERVE_HOST}:${OPENOBSERVE_PORT}/api/default
+    headers:
+    #  Authorization: "Basic cm9vdEBleGFtcGxlLmNvbTpSVW5hSlFkMUpuTDVqV29v" 
+      stream-name: otel_logs_collector # This will be the log stream name
+    auth:
+      authenticator: basicauth/client
+  
+service:
+  telemetry:
+    logs:
+      level: debug
+  extensions: [basicauth/client]
+  pipelines:
+    logs:
+      receivers: [filelog,filelog/tomcat,filelog/apache-common]
+      processors: [attributes/app_metadata]
+      exporters: [logging,otlphttp/openobserve]
+
+extensions:
+  basicauth/client:
+    client_auth: 
+      username: ${OPENOBSERVE_USERNAME}
+      password: ${OPENOBSERVE_PASSWORD}
+    

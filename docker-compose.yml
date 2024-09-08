@@ -4,8 +4,9 @@ services:
     restart: unless-stopped
     command: [ "--config=/etc/config.yml" ]
     volumes:
-      - ./config/otel/config.yml:/etc/config.yml
-      - ./demo-app/dbt/logs:/etc/logs
+      #- ./config/otel/config.yml:/etc/config.yml
+      - ./config/otel/config-advanced.yml:/etc/config.yml
+      - ./demo-logs:/etc/logs
       - /:/hostfs:ro
     depends_on:
       - openobserve
@@ -33,13 +34,12 @@ services:
       ZO_TELEMETRY: "false"
     networks:
       - nw_openobserve
-  
   log_fluentbit:
     container_name: log_fluentbit
     image: fluent/fluent-bit:2.2.3
     volumes:
       - ./config/fluentbit:/fluent-bit/etc/
-      - ./demo-app/dbt/logs:/var/log
+      - ./demo-logs/dbt-data-pipeline:/var/log
     restart: always
     environment:
       OPENOBSERVE_HOST: ${OPENOBSERVE_HOST:-openobserve}

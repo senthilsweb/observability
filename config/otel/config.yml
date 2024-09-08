@@ -1,7 +1,7 @@
 receivers:
   filelog:
     include: 
-      - /etc/logs/*.log
+      - /etc/logs/**/*.log
     multiline:
      line_start_pattern: '^\x1b\['
     start_at: beginning

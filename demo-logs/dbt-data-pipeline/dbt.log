@@ -1202,7 +1202,6 @@ drop table if exists "sporting_event_sales_db"."staging"."stg_tickit__categories
 [0m22:27:36.211412 [debug] [Thread-3  ]: SQL status: OK in 0.0 seconds
 [0m22:27:36.211813 [debug] [Thread-7  ]: On model.sporting_event_sales_db.stg_tickit__venues: /* {"app": "dbt", "dbt_version": "1.7.10", "profile_name": "sporting_event_sales_db", "target_name": "dev", "node_id": "model.sporting_event_sales_db.stg_tickit__venues"} */
 drop table if exists "sporting_event_sales_db"."staging"."stg_tickit__venues__dbt_backup" cascade
-[0m22:27:36.212214 [debug] [Thread-2  ]: SQL status: OK in 0.0 seconds
 [0m22:27:36.212468 [debug] [Thread-1  ]: SQL status: OK in 0.0 seconds
 [0m22:27:36.214163 [debug] [Thread-3  ]: Using duckdb connection "model.sporting_event_sales_db.stg_tickit__events"
 [0m22:27:36.215198 [debug] [Thread-2  ]: Timing info for model.sporting_event_sales_db.stg_tickit__dates (execute): 22:27:36.144853 => 22:27:36.215072
@@ -38989,4 +38988,6 @@ drop view if exists "sporting_event_sales_db"."elementary"."job_run_results__dbt
 [0m22:03:48.747083 [debug] [MainThread]: Flushing usage events
 [0m22:03:48.747083 [debug] [MainThread]: Flushing usage events
 [0m22:03:48.729976 [warn ] [MainThread]: Nothing to do. Try checking your model configs and model specification args
+[0m22:03:48.730262 [debug] [MainThread]: Command end result
+[0m22:03:48.730262 [debug] [MainThread]: Command end result
 [0m22:03:48.730262 [debug] [MainThread]: Command end result
